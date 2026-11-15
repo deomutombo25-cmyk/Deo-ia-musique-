@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deo IA Musique - Style Gims</title>
+<style>
+body{margin:0;font-family:Arial;background:#0f0f1a;color:white;text-align:center}
+header{padding:20px;background:linear-gradient(90deg,#ff0000,#ffcc00,#000)}
+h1{margin:0;font-size:26px}
+.box{background:#1c1c2e;margin:12px;padding:15px;border-radius:20px}
+button{padding:12px 16px;border:none;border-radius:30px;background:#ff0000;color:white;font-weight:bold;margin:4px}
+input{width:85%;padding:12px;border-radius:20px;border:none;margin:10px;text-align:center}
+.note{background:white;color:black;font-size:18px;width:52px;height:70px;border-radius:10px}
+</style>
+</head>
+<body>
+<header><h1>🎤 DEO IA MUSIQUE</h1><p>Style GIMS - Deo Mutombo - Kinshasa 🇨🇩</p></header>
+<div class="box"><h3>1. Écris tes paroles</h3>
+<input id="paroles" placeholder="Ex: Je viens de Kinshasa, je vais réussir..."><br>
+<button onclick="chanter()" style="background:#ffcc00;color:black">🎤 CHANTER MES PAROLES</button>
+<p id="resultat"></p></div>
+<div class="box"><h3>2. Piano GIMS</h3>
+<button class="note" onclick="jouer(262)">Do</button>
+<button class="note" onclick="jouer(294)">Ré</button>
+<button class="note" onclick="jouer(330)">Mi</button>
+<button class="note" onclick="jouer(349)">Fa</button>
+<button class="note" onclick="jouer(392)">Sol</button>
+<button class="note" onclick="jouer(440)">La</button>
+<button class="note" onclick="jouer(494)">Si</button></div>
+<div class="box"><h3>3. Beat GIMS</h3>
+<button onclick="beat()" style="background:#00cc66">🥁 LANCER BEAT</button>
+<button onclick="stopBeat()" style="background:#555">⏹️ STOP</button>
+<p id="beatTxt">Prêt...</p></div>
+<div class="box"><p>Deo IA V53 - Créé par Deo Mutombo</p></div>
+<script>
+let audio=new (window.AudioContext||window.webkitAudioContext)();
+function jouer(f){let o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.5,audio.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audio.currentTime+1);o.connect(g);g.connect(audio.destination);o.start();o.stop(audio.currentTime+1)}
+function chanter(){let t=document.getElementById('paroles').value;if(!t){document.getElementById('resultat').innerText='Écris tes paroles!';return}document.getElementById('resultat').innerText='🎤 Deo IA chante: "'+t+'"';setTimeout(()=>jouer(262),0);setTimeout(()=>jouer(330),400);setTimeout(()=>jouer(392),800);let v=new SpeechSynthesisUtterance(t);v.lang='fr-FR';v.rate=0.8;v.pitch=0.7;speechSynthesis.speak(v)}
+let bi=null;function beat(){document.getElementById('beatTxt').innerText='🥁 Beat GIMS en cours...';if(bi)return;let i=0;bi=setInterval(()=>{if(i%4==0)jouer(80);if(i%2==0)jouer(1200);i++},400)}
+function stopBeat(){clearInterval(bi);bi=null;document.getElementById('beatTxt').innerText='Beat arrêté.'}
+</script>
+</body>
+  </html>
