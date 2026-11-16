@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deo IA Studio V6 - Final</title>
+<title>Deo IA Studio V7 - Final</title>
 <style>
 body{margin:0;font-family:Arial;background:#0a0a15;color:white;text-align:center}
 header{padding:20px;background:linear-gradient(90deg,#ff0000,#ffcc00,#7b00ff)}
@@ -20,7 +20,7 @@ textarea{height:120px;text-align:left}
 </style>
 </head>
 <body>
-<header><h1>🎧 DEO IA STUDIO V6</h1><p>Deo Mutombo - Kinshasa 🇨🇩 - Version Finale!</p></header>
+<header><h1>🎧 DEO IA STUDIO V7</h1><p>Deo Mutombo - Kinshasa 🇨🇩 - Idées qui marchent!</p></header>
 
 <div class="box"><h3>1. Toutes les Instrumentales 🎵</h3>
 <select id="theme" onchange="choisirTheme()">
@@ -96,7 +96,7 @@ Femme: Moi aussi mon amour"></textarea><br>
 <button class="note" onclick="jouerNote(440)">La</button>
 <button class="note" onclick="jouerNote(494)">Si</button></div>
 
-<div class="box"><p>Deo IA Studio V6 - Créé par Deo Mutombo</p></div>
+<div class="box"><p>Deo IA Studio V7 - Créé par Deo Mutombo</p></div>
 
 <script>
 let audio=new (window.AudioContext||window.webkitAudioContext)();
@@ -109,4 +109,64 @@ let modeChant='solo', instruTimer=null, instruStep=0, ideeActuelle="", themeDevi
 let themes={
 rap:{txt:"🎤 Instrumental RAP: Beat fort, rapide!", notes:[131,131,196,196,262,196,131,196], tempo:280},
 rumba:{txt:"💃 Instrumental RUMBA: Guitare Kinshasa, danse!", notes:[392,440,494,440,392,330,392,440], tempo:400},
-amour:{txt:"❤️ Instrument
+amour:{txt:"❤️ Instrumental AMOUR: Piano doux, romantique...", notes:[262,330,392,330,262,330,392,523], tempo:600},
+anniversaire:{txt:"🎂 Instrumental ANNIVERSAIRE: Joyeux, fête!", notes:[523,659,784,659,523,659,784,1046], tempo:300},
+afrobeat:{txt:"🔥 Instrumental AFROBEAT: Danse, rapide!", notes:[392,392,523,392,440,523,440,392], tempo:320},
+amapiano:{txt:"🎹 Instrumental AMAPIANO: Piano log drum!", notes:[262,392,330,392,523,392,330,262], tempo:380},
+gospel:{txt:"🙏 Instrumental GOSPEL: Calme, beau...", notes:[262,349,392,523,392,349,330,262], tempo:700},
+motivation:{txt:"💪 Instrumental MOTIVATION: Fort, puissant!", notes:[262,262,392,392,440,440,523,523], tempo:350},
+couple:{txt:"💑 Instrumental COUPLE: Doux, Homme + Femme, romantique!", notes:[262,330,392,523,392,330,262,330], tempo:550},
+gims:{txt:"🎤 Instrumental GIMS: Piano triste puis beat fort!", notes:[262,330,392,440,392,330,262,330], tempo:500}
+};
+
+let toutesIdees=[
+{titre:"Je Suis Le Meilleur - RAP", style:"rap", texte:"Je viens de Kinshasa, je suis le meilleur,\nPersonne ne peut m'arrêter, je suis fort,\nJe rappe, je chante, je vais réussir,\nDeo est là, tout le monde va danser!"},
+{titre:"Kinshasa Ma Ville - RUMBA", style:"rumba", texte:"Kinshasa ma ville, ma fierté,\nDe Gombe à Bandal, on va danser,\nLa rumba dans le sang, on ne lâche rien,\nDeo est là, on va réussir!"},
+{titre:"Toi Et Moi Pour Toujours - COUPLE", style:"couple", texte:"Homme: Je t'aime mon bébé, tu es ma vie\nFemme: Moi aussi mon amour, tu es mon coeur\nHomme: On va réussir ensemble, main dans la main\nFemme: Pour toujours, toi et moi, on ne se quitte pas"},
+{titre:"Mon Coeur Bat Pour Toi - AMOUR", style:"amour", texte:"Mon coeur bat pour toi, chaque jour,\nQuand je te vois, je suis heureux,\nTu es ma lumière, mon amour,\nJe ne veux que toi, pour toujours."},
+{titre:"Joyeux Anniversaire - FÊTE", style:"anniversaire", texte:"Joyeux anniversaire à toi mon ami,\nAujourd'hui c'est ta fête, on va danser,\nQue Dieu te bénisse, que tu sois heureux,\nKinshasa est là pour célébrer avec toi!"},
+{titre:"On Va Danser - AFROBEAT", style:"afrobeat", texte:"Ce soir on va danser, tout le monde est là,\nLa musique est forte, on ne dort pas,\nAfrobeat dans le sang, on bouge,\nKinshasa, on est les meilleurs!"},
+{titre:"Amapiano Night", style:"amapiano", texte:"Le piano joue, la nuit commence,\nOn danse doucement, le coeur bat,\nAmapiano, c'est notre vibe,\nCe soir c'est pour nous!"},
+{titre:"Merci Seigneur - GOSPEL", style:"gospel", texte:"Seigneur merci pour ce jour,\nTu es ma force, mon secours,\nJe te chante avec tout mon coeur,\nQue ta paix remplisse ma vie."},
+{titre:"Ne Lâche Rien - MOTIVATION", style:"motivation", texte:"Ne lâche rien, continue à te battre,\nMême si c'est dur, tu vas y arriver,\nKinshasa croit en toi, lève-toi,\nTon jour va venir, n'abandonne jamais!"},
+{titre:"Je Viens De Loin - GIMS", style:"gims", texte:"Je viens de loin, j'ai souffert,\nMais aujourd'hui je suis debout,\nOn m'a dit que je n'y arriverai pas,\nRegarde-moi maintenant, je suis là!"}
+];
+
+function debloquerSon(){
+  audio.resume();
+  let v=new SpeechSynthesisUtterance("Bonjour Deo, le son est débloqué, je vais chanter ta chanson!");
+  v.lang='fr-FR'; speechSynthesis.speak(v);
+  document.getElementById('sonTxt').innerText="✅ Son débloqué! Maintenant appuie sur CHANTER!";
+  jouerNote(523); jouerNote(659);
+}
+function setTheme(v){document.getElementById('theme').value=v;choisirTheme();}
+function choisirTheme(){let t=document.getElementById('theme').value;if(t=='auto'){document.getElementById('themeTxt').innerText="🤖 Mode AUTO: Écris ta chanson, je vais deviner!";return}document.getElementById('themeTxt').innerText=themes[t].txt;stopInstru();if(t=='couple'){setMode('couple',document.getElementById('btnCouple'))}}
+function setMode(m,btn){modeChant=m;document.getElementById('btnSolo').classList.toggle('active',m=='solo');document.getElementById('btnCouple').classList.toggle('active',m=='couple');document.getElementById('modeTxt').innerText=m=='couple'?"💑 Mode COUPLE: Homme (voix grave) + Femme (voix douce)":"Mode Solo: Une seule voix";if(m=='couple')document.getElementById('theme').value='couple';}
+function devinerStyle(){let v=document.getElementById('paroles').value.toLowerCase();compter();if(!v)return;if(v.includes("homme:")||v.includes("femme:")){themeDevine="couple";document.getElementById('devineTxt').innerText="💑 Je devine: C'est une chanson COUPLE!";}else if(v.includes("anniversaire")||v.includes("bougie")){themeDevine="anniversaire";document.getElementById('devineTxt').innerText="🎂 Je devine: C'est ANNIVERSAIRE!";}else if(v.includes("aime")||v.includes("amour")||v.includes("coeur")||v.includes("bébé")){themeDevine="amour";document.getElementById('devineTxt').innerText="❤️ Je devine: C'est AMOUR!";}else if(v.includes("rappe")||v.includes("rap")||v.includes("meilleur")){themeDevine="rap";document.getElementById('devineTxt').innerText="🎤 Je devine: C'est du RAP!";}else if(v.includes("kinshasa")||v.includes("rumba")||v.includes("danser")){themeDevine="rumba";document.getElementById('devineTxt').innerText="💃 Je devine: C'est de la RUMBA!";}else if(v.includes("seigneur")||v.includes("dieu")){themeDevine="gospel";document.getElementById('devineTxt').innerText="🙏 Je devine: C'est GOSPEL!";}else if(v.includes("lâche")||v.includes("réussir")){themeDevine="motivation";document.getElementById('devineTxt').innerText="💪 Je devine: C'est MOTIVATION!";}}
+function donnerIdee(){
+  let t=document.getElementById('theme').value;
+  let choix;
+  if(t=='auto' || t==''){
+    choix=toutesIdees[Math.floor(Math.random()*toutesIdees.length)];
+  } else {
+    let filtres=toutesIdees.filter(x=>x.style==t);
+    if(filtres.length==0) filtres=toutesIdees;
+    choix=filtres[Math.floor(Math.random()*filtres.length)];
+  }
+  ideeActuelle=choix.texte;
+  themeDevine=choix.style;
+  document.getElementById('ideeBox').innerHTML="<b>🎵 TITRE: "+choix.titre+"</b><br><br>"+choix.texte.replace(/\n/g,"<br>");
+  document.getElementById('resultat').innerText="✅ Nouvelle idée! Appuie sur UTILISER CETTE IDÉE!";
+}
+function utiliserIdee(){if(!ideeActuelle)donnerIdee();document.getElementById('paroles').value=ideeActuelle;devinerStyle();document.getElementById('resultat').innerText="✅ Idée mise dans ta chanson! Maintenant appuie sur CHANTER!";}
+function effacer(){document.getElementById('paroles').value='';compter();}
+function compter(){let v=document.getElementById('paroles').value;let n=v.trim()?v.trim().split(/\s+/).length:0;document.getElementById('nbMots').innerText=n+' mots';}
+function jouerNote(f,avecEcho=true){let o=audio.createOscillator(),g=audio.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(0.6,audio.currentTime);g.gain.exponentialRampToValueAtTime(0.01,audio.currentTime+1.2);o.connect(g);g.connect(audio.destination);if(avecEcho&&effets.echo)g.connect(delay);o.start();o.stop(audio.currentTime+1.2)}
+function toggleEffet(nom,btn){effets[nom]=!effets[nom];btn.classList.toggle('active',effets[nom]);}
+function getThemeActuel(){let t=document.getElementById('theme').value;if(t=='auto')return themeDevine;return t;}
+function jouerInstru(){let t=getThemeActuel();let th=themes[t];document.getElementById('instruTxt').innerText='🎵 Instrumental '+t+' en cours...';stopInstru();instruStep=0;instruTimer=setInterval(()=>{let n=th.notes[instruStep%th.notes.length];jouerNote(n,false);if(instruStep%4==0)jouerNote(80,false);instruStep++},th.tempo);}
+function stopInstru(){if(instruTimer){clearInterval(instruTimer);instruTimer=null;document.getElementById('instruTxt').innerText='Instrumental arrêté.';}}
+function chanterStudio(){let t=document.getElementById('paroles').value;if(!t){document.getElementById('resultat').innerText='Écris d’abord ta chanson ou appuie sur DONNE-MOI UNE IDÉE!';return}let theme=getThemeActuel();let th=themes[theme];document.getElementById('resultat').innerText='🎤 STUDIO: On enregistre en style '+theme+' ...';let lignes=t.split('\n');speechSynthesis.cancel();lignes.forEach((ligne,i)=>{setTimeout(()=>{if(effets.auto){let n=th.notes[i%th.notes.length];jouerNote(n,true);}let texte=ligne.replace("Homme:","").replace("Femme:","");let estFemme=ligne.toLowerCase().includes("femme:");let estHomme=ligne.toLowerCase().includes("homme:");let v=new SpeechSynthesisUtterance(texte);v.lang='fr-FR';if(modeChant=='couple'||estFemme||estHomme){if(estFemme){v.rate=0.9;v.pitch=1.6;}else{v.rate=0.8;v.pitch=0.3;}}else{v.rate=effets.grave?0.75:0.85;v.pitch=effets.grave?0.4:1;}speechSynthesis.speak(v);},i*2000);});jouerInstru();}
+</script>
+</body>
+</html>
