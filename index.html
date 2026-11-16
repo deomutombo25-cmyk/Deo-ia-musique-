@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deo IA Studio V5 - Pro</title>
+<title>Deo IA Studio V6 - Final</title>
 <style>
 body{margin:0;font-family:Arial;background:#0a0a15;color:white;text-align:center}
 header{padding:20px;background:linear-gradient(90deg,#ff0000,#ffcc00,#7b00ff)}
@@ -20,21 +20,21 @@ textarea{height:120px;text-align:left}
 </style>
 </head>
 <body>
-<header><h1>🎧 DEO IA STUDIO V5 - PRO</h1><p>Deo Mutombo - Kinshasa 🇨🇩 - Il connaît tout!</p></header>
+<header><h1>🎧 DEO IA STUDIO V6</h1><p>Deo Mutombo - Kinshasa 🇨🇩 - Version Finale!</p></header>
 
 <div class="box"><h3>1. Toutes les Instrumentales 🎵</h3>
 <select id="theme" onchange="choisirTheme()">
 <option value="auto">🤖 AUTO - L'IA DEVINE POUR TOI!</option>
-<option value="rap">🎤 RAP - Fort, vite</option>
-<option value="rumba">💃 RUMBA - Kinshasa, danse</option>
-<option value="amour">❤️ AMOUR - Doux, lent</option>
-<option value="anniversaire">🎂 ANNIVERSAIRE - Fête</option>
-<option value="afrobeat">🔥 AFROBEAT - Danse, rapide</option>
-<option value="amapiano">🎹 AMAPIANO - Piano, Afrique du Sud</option>
-<option value="gospel">🙏 GOSPEL / ÉGLISE - Calme</option>
-<option value="motivation">💪 MOTIVATION - Puissant</option>
+<option value="rap">🎤 RAP</option>
+<option value="rumba">💃 RUMBA</option>
+<option value="amour">❤️ AMOUR</option>
+<option value="anniversaire">🎂 ANNIVERSAIRE</option>
+<option value="afrobeat">🔥 AFROBEAT</option>
+<option value="amapiano">🎹 AMAPIANO</option>
+<option value="gospel">🙏 GOSPEL / ÉGLISE</option>
+<option value="motivation">💪 MOTIVATION</option>
 <option value="couple">💑 COUPLE - Homme + Femme</option>
-<option value="gims">🎤 STYLE GIMS - Piano + Rap</option>
+<option value="gims">🎤 STYLE GIMS</option>
 </select>
 <p id="themeTxt">🤖 Mode AUTO: Écris ta chanson, je vais deviner le style!</p>
 <div>
@@ -56,8 +56,7 @@ textarea{height:120px;text-align:left}
 <textarea id="paroles" oninput="devinerStyle()" placeholder="Écris ici...
 Pour un COUPLE, écris comme ça:
 Homme: Je t'aime mon bébé
-Femme: Moi aussi mon amour
-Homme: On va réussir ensemble"></textarea><br>
+Femme: Moi aussi mon amour"></textarea><br>
 <button onclick="effacer()" class="small">🗑️ Effacer</button>
 <p id="nbMots">0 mots</p>
 <p id="devineTxt" style="color:#ffcc00;font-weight:bold"></p>
@@ -82,7 +81,9 @@ Homme: On va réussir ensemble"></textarea><br>
 </div>
 
 <div class="box"><h3>7. Chante!</h3>
-<button onclick="chanterStudio()" style="background:#ffcc00;color:black;font-size:17px">🎤 CHANTER AVEC EFFET STUDIO</button>
+<button onclick="debloquerSon()" style="background:#ff0000;font-size:16px">🔓 1. APPUIE ICI POUR DÉBLOQUER LE SON</button><br>
+<p id="sonTxt" style="color:#ffcc00">Son bloqué? Appuie sur le bouton rouge!</p>
+<button onclick="chanterStudio()" style="background:#ffcc00;color:black;font-size:17px">🎤 2. CHANTER MA CHANSON</button>
 <p id="resultat"></p>
 </div>
 
@@ -95,7 +96,7 @@ Homme: On va réussir ensemble"></textarea><br>
 <button class="note" onclick="jouerNote(440)">La</button>
 <button class="note" onclick="jouerNote(494)">Si</button></div>
 
-<div class="box"><p>Deo IA Studio V5 - Créé par Deo Mutombo</p></div>
+<div class="box"><p>Deo IA Studio V6 - Créé par Deo Mutombo</p></div>
 
 <script>
 let audio=new (window.AudioContext||window.webkitAudioContext)();
@@ -108,37 +109,4 @@ let modeChant='solo', instruTimer=null, instruStep=0, ideeActuelle="", themeDevi
 let themes={
 rap:{txt:"🎤 Instrumental RAP: Beat fort, rapide!", notes:[131,131,196,196,262,196,131,196], tempo:280},
 rumba:{txt:"💃 Instrumental RUMBA: Guitare Kinshasa, danse!", notes:[392,440,494,440,392,330,392,440], tempo:400},
-amour:{txt:"❤️ Instrumental AMOUR: Piano doux, romantique...", notes:[262,330,392,330,262,330,392,523], tempo:600},
-anniversaire:{txt:"🎂 Instrumental ANNIVERSAIRE: Joyeux, fête!", notes:[523,659,784,659,523,659,784,1046], tempo:300},
-afrobeat:{txt:"🔥 Instrumental AFROBEAT: Danse, rapide!", notes:[392,392,523,392,440,523,440,392], tempo:320},
-amapiano:{txt:"🎹 Instrumental AMAPIANO: Piano log drum!", notes:[262,392,330,392,523,392,330,262], tempo:380},
-gospel:{txt:"🙏 Instrumental GOSPEL: Calme, beau...", notes:[262,349,392,523,392,349,330,262], tempo:700},
-motivation:{txt:"💪 Instrumental MOTIVATION: Fort, puissant!", notes:[262,262,392,392,440,440,523,523], tempo:350},
-couple:{txt:"💑 Instrumental COUPLE: Doux, Homme + Femme, romantique!", notes:[262,330,392,523,392,330,262,330], tempo:550},
-gims:{txt:"🎤 Instrumental GIMS: Piano triste puis beat fort!", notes:[262,330,392,440,392,330,262,330], tempo:500}
-};
-
-let idees={
-rap:[{titre:"Je Suis Le Meilleur", texte:"Je viens de Kinshasa, je suis le meilleur,\nPersonne ne peut m'arrêter, je suis fort,\nJe rappe, je chante, je vais réussir,\nDeo est là, tout le monde va danser!"}],
-rumba:[{titre:"Kinshasa Ma Ville", texte:"Kinshasa ma ville, ma fierté,\nDe Gombe à Bandal, on va danser,\nLa rumba dans le sang, on ne lâche rien,\nDeo est là, on va réussir!"}],
-couple:[{titre:"Toi Et Moi Pour Toujours", texte:"Homme: Je t'aime mon bébé, tu es ma vie\nFemme: Moi aussi mon amour, tu es mon coeur\nHomme: On va réussir ensemble, main dans la main\nFemme: Pour toujours, toi et moi, on ne se quitte pas"}],
-amour:[{titre:"Mon Coeur Bat Pour Toi", texte:"Mon coeur bat pour toi, chaque jour,\nQuand je te vois, je suis heureux,\nTu es ma lumière, mon amour,\nJe ne veux que toi, pour toujours."}],
-anniversaire:[{titre:"Joyeux Anniversaire", texte:"Joyeux anniversaire à toi mon ami,\nAujourd'hui c'est ta fête, on va danser,\nQue Dieu te bénisse, que tu sois heureux,\nKinshasa est là pour célébrer avec toi!"}],
-afrobeat:[{titre:"On Va Danser", texte:"Ce soir on va danser, tout le monde est là,\nLa musique est forte, on ne dort pas,\nAfrobeat dans le sang, on bouge,\nKinshasa, on est les meilleurs!"}],
-amapiano:[{titre:"Amapiano Night", texte:"Le piano joue, la nuit commence,\nOn danse doucement, le coeur bat,\nAmapiano, c'est notre vibe,\nCe soir c'est pour nous!"}],
-gospel:[{titre:"Merci Seigneur", texte:"Seigneur merci pour ce jour,\nTu es ma force, mon secours,\nJe te chante avec tout mon coeur,\nQue ta paix remplisse ma vie."}],
-motivation:[{titre:"Ne Lâche Rien", texte:"Ne lâche rien, continue à te battre,\nMême si c'est dur, tu vas y arriver,\nKinshasa croit en toi, lève-toi,\nTon jour va venir, n'abandonne jamais!"}],
-gims:[{titre:"Je Viens De Loin", texte:"Je viens de loin, j'ai souffert,\nMais aujourd'hui je suis debout,\nOn m'a dit que je n'y arriverai pas,\nRegarde-moi maintenant, je suis là!"}]
-};
-
-function setTheme(v){document.getElementById('theme').value=v;choisirTheme();}
-  function debloquerSon(){
-  audio.resume();
-  let v = new SpeechSynthesisUtterance("Bonjour Deo, le son est débloqué, je vais chanter ta chanson!");
-  v.lang='fr-FR'; speechSynthesis.speak(v);
-  document.getElementById('sonTxt').innerText="Son débloqué! Maintenant appuie sur CHANTER!";
-  jouerNote(523); jouerNote(659);
-  }
-function choisirTheme(){let t=document.getElementById('theme').value;if(t=='auto'){document.getElementById('themeTxt').innerText="🤖 Mode AUTO: Écris ta chanson, je vais deviner!";return}document.getElementById('themeTxt').innerText=themes[t].txt;stopInstru();if(t=='couple'){setMode('couple',document.getElementById('btnCouple'))}}
-function setMode(m,btn){modeChant=m;document.getElementById('btnSolo').classList.toggle('active',m=='solo');document.getElementById('btnCouple').classList.toggle('active',m=='couple');document.getElementById('modeTxt').innerText=m=='couple'?"💑 Mode COUPLE: Homme (voix grave) + Femme (voix douce)":"Mode Solo: Une seule voix";if(m=='couple')setTheme('couple');}
-function devinerStyle(){let v=document.getElementById('paroles').value.toLowerCase();compter();if(!v)return;if(v.includes("homme:")||v.includes("femme:")||v.includes("bébé")&&v.includes("amour")){themeDevine="couple";document.getElementById('devineTxt').innerText="💑 Je devine: C'est une chanson COUPLE! Je mets l'instrumental Couple!";}else if(v.includes("anniversaire")||v.includes("fête")||v.includes("bougie")){themeDevine="anniversaire";document.getElementById('devineTxt').innerText="🎂 Je devine: C'est ANNIVERSAIRE! Je mets l'instrumental Fête!";}else if(v.includes("aime")||v.includes("amour")||v.includes("coeur")||v.includes("bébé")){themeDevine="amour";document.getElementById('devineTxt').innerText="❤️ Je devine: C'est AMOUR! Je mets l'instrumental Amour!";}else if(v.includes("rappe")||v.includes("rap")||v.includes("meilleur")||v.includes("fort")){themeDevine="rap";document.getElementById('devineTxt').innerText="🎤 Je devine:
+amour:{txt:"❤️ Instrument
