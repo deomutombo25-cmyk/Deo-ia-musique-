@@ -132,6 +132,13 @@ gims:[{titre:"Je Viens De Loin", texte:"Je viens de loin, j'ai souffert,\nMais a
 };
 
 function setTheme(v){document.getElementById('theme').value=v;choisirTheme();}
+  function debloquerSon(){
+  audio.resume();
+  let v = new SpeechSynthesisUtterance("Bonjour Deo, le son est débloqué, je vais chanter ta chanson!");
+  v.lang='fr-FR'; speechSynthesis.speak(v);
+  document.getElementById('sonTxt').innerText="Son débloqué! Maintenant appuie sur CHANTER!";
+  jouerNote(523); jouerNote(659);
+  }
 function choisirTheme(){let t=document.getElementById('theme').value;if(t=='auto'){document.getElementById('themeTxt').innerText="🤖 Mode AUTO: Écris ta chanson, je vais deviner!";return}document.getElementById('themeTxt').innerText=themes[t].txt;stopInstru();if(t=='couple'){setMode('couple',document.getElementById('btnCouple'))}}
 function setMode(m,btn){modeChant=m;document.getElementById('btnSolo').classList.toggle('active',m=='solo');document.getElementById('btnCouple').classList.toggle('active',m=='couple');document.getElementById('modeTxt').innerText=m=='couple'?"💑 Mode COUPLE: Homme (voix grave) + Femme (voix douce)":"Mode Solo: Une seule voix";if(m=='couple')setTheme('couple');}
 function devinerStyle(){let v=document.getElementById('paroles').value.toLowerCase();compter();if(!v)return;if(v.includes("homme:")||v.includes("femme:")||v.includes("bébé")&&v.includes("amour")){themeDevine="couple";document.getElementById('devineTxt').innerText="💑 Je devine: C'est une chanson COUPLE! Je mets l'instrumental Couple!";}else if(v.includes("anniversaire")||v.includes("fête")||v.includes("bougie")){themeDevine="anniversaire";document.getElementById('devineTxt').innerText="🎂 Je devine: C'est ANNIVERSAIRE! Je mets l'instrumental Fête!";}else if(v.includes("aime")||v.includes("amour")||v.includes("coeur")||v.includes("bébé")){themeDevine="amour";document.getElementById('devineTxt').innerText="❤️ Je devine: C'est AMOUR! Je mets l'instrumental Amour!";}else if(v.includes("rappe")||v.includes("rap")||v.includes("meilleur")||v.includes("fort")){themeDevine="rap";document.getElementById('devineTxt').innerText="🎤 Je devine:
