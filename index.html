@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deo IA Studio V7 - Final</title>
+<title>Deo IA Studio V8 - Avec Enregistrement</title>
 <style>
 body{margin:0;font-family:Arial;background:#0a0a15;color:white;text-align:center}
 header{padding:20px;background:linear-gradient(90deg,#ff0000,#ffcc00,#7b00ff)}
@@ -17,10 +17,12 @@ textarea{height:120px;text-align:left}
 .active{background:#00cc66!important}
 .idee{background:#2a2a45;padding:12px;border-radius:15px;margin:8px;text-align:left}
 .chip{display:inline-block;background:#333;padding:6px 10px;border-radius:20px;margin:3px;font-size:12px}
+.rec{border:2px solid #ff0000}
+audio{width:90%;margin:10px}
 </style>
 </head>
 <body>
-<header><h1>🎧 DEO IA STUDIO V7</h1><p>Deo Mutombo - Kinshasa 🇨🇩 - Idées qui marchent!</p></header>
+<header><h1>🎧 DEO IA STUDIO V8</h1><p>Deo Mutombo - Kinshasa 🇨🇩 - Avec Enregistrement!</p></header>
 
 <div class="box"><h3>1. Toutes les Instrumentales 🎵</h3>
 <select id="theme" onchange="choisirTheme()">
@@ -87,7 +89,18 @@ Femme: Moi aussi mon amour"></textarea><br>
 <p id="resultat"></p>
 </div>
 
-<div class="box"><h3>8. Piano</h3>
+<div class="box rec"><h3>8. 🎙️ ENREGISTRER MA VOIX - NOUVEAU!</h3>
+<p>Chante avec ta vraie voix et enregistre!</p>
+<button id="btnRec" onclick="demarrerEnregistrement()" style="background:#ff0000;font-size:17px">🔴 COMMENCER À ENREGISTRER</button>
+<button onclick="arreterEnregistrement()" style="background:#333;font-size:17px">⏹️ ARRÊTER</button>
+<p id="recTxt" style="color:#ffcc00">Pas encore enregistré</p>
+<p id="timerRec" style="font-size:20px;font-weight:bold">00:00</p>
+<audio id="player" controls style="display:none"></audio><br>
+<a id="downloadLink" style="display:none;background:#00cc66;color:white;padding:12px 20px;border-radius:30px;text-decoration:none;font-weight:bold">⬇️ TÉLÉCHARGER MA CHANSON</a>
+<p style="font-size:12px">Astuce: 1. LANCE INSTRUMENTAL 2. ENREGISTRER 3. CHANTE!</p>
+</div>
+
+<div class="box"><h3>9. Piano</h3>
 <button class="note" onclick="jouerNote(262)">Do</button>
 <button class="note" onclick="jouerNote(294)">Ré</button>
 <button class="note" onclick="jouerNote(330)">Mi</button>
@@ -96,7 +109,7 @@ Femme: Moi aussi mon amour"></textarea><br>
 <button class="note" onclick="jouerNote(440)">La</button>
 <button class="note" onclick="jouerNote(494)">Si</button></div>
 
-<div class="box"><p>Deo IA Studio V7 - Créé par Deo Mutombo</p></div>
+<div class="box"><p>Deo IA Studio V8 - Créé par Deo Mutombo</p></div>
 
 <script>
 let audio=new (window.AudioContext||window.webkitAudioContext)();
@@ -105,6 +118,7 @@ let feedback=audio.createGain(); feedback.gain.value=0.35;
 delay.connect(feedback); feedback.connect(delay); feedback.connect(audio.destination);
 let effets={echo:true,grave:false,auto:true};
 let modeChant='solo', instruTimer=null, instruStep=0, ideeActuelle="", themeDevine="amour";
+let mediaRecorder=null, morceaux=[], recTimer=null, recSec=0;
 
 let themes={
 rap:{txt:"🎤 Instrumental RAP: Beat fort, rapide!", notes:[131,131,196,196,262,196,131,196], tempo:280},
@@ -167,6 +181,32 @@ function getThemeActuel(){let t=document.getElementById('theme').value;if(t=='au
 function jouerInstru(){let t=getThemeActuel();let th=themes[t];document.getElementById('instruTxt').innerText='🎵 Instrumental '+t+' en cours...';stopInstru();instruStep=0;instruTimer=setInterval(()=>{let n=th.notes[instruStep%th.notes.length];jouerNote(n,false);if(instruStep%4==0)jouerNote(80,false);instruStep++},th.tempo);}
 function stopInstru(){if(instruTimer){clearInterval(instruTimer);instruTimer=null;document.getElementById('instruTxt').innerText='Instrumental arrêté.';}}
 function chanterStudio(){let t=document.getElementById('paroles').value;if(!t){document.getElementById('resultat').innerText='Écris d’abord ta chanson ou appuie sur DONNE-MOI UNE IDÉE!';return}let theme=getThemeActuel();let th=themes[theme];document.getElementById('resultat').innerText='🎤 STUDIO: On enregistre en style '+theme+' ...';let lignes=t.split('\n');speechSynthesis.cancel();lignes.forEach((ligne,i)=>{setTimeout(()=>{if(effets.auto){let n=th.notes[i%th.notes.length];jouerNote(n,true);}let texte=ligne.replace("Homme:","").replace("Femme:","");let estFemme=ligne.toLowerCase().includes("femme:");let estHomme=ligne.toLowerCase().includes("homme:");let v=new SpeechSynthesisUtterance(texte);v.lang='fr-FR';if(modeChant=='couple'||estFemme||estHomme){if(estFemme){v.rate=0.9;v.pitch=1.6;}else{v.rate=0.8;v.pitch=0.3;}}else{v.rate=effets.grave?0.75:0.85;v.pitch=effets.grave?0.4:1;}speechSynthesis.speak(v);},i*2000);});jouerInstru();}
+
+// --- NOUVEAU: ENREGISTRER ---
+async function demarrerEnregistrement(){
+  try{
+    let stream=await navigator.mediaDevices.getUserMedia({audio:true});
+    morceaux=[];
+    mediaRecorder=new MediaRecorder(stream);
+    mediaRecorder.ondataavailable=e=>{if(e.data.size>0)morceaux.push(e.data)};
+    mediaRecorder.onstop=()=>{
+      let blob=new Blob(morceaux,{type:'audio/webm'});
+      let url=URL.createObjectURL(blob);
+      let p=document.getElementById('player'); p.src=url; p.style.display='block';
+      let dl=document.getElementById('downloadLink'); dl.href=url; dl.download='ma-chanson-deo.webm'; dl.style.display='inline-block';
+      document.getElementById('recTxt').innerText="✅ Enregistré! Écoute ta chanson en haut!";
+      stopInstru();
+    };
+    mediaRecorder.start();
+    document.getElementById('recTxt').innerText="🔴 EN COURS... Chante maintenant!";
+    document.getElementById('btnRec').innerText="🔴 J'ENREGISTRE...";
+    recSec=0; clearInterval(recTimer);
+    recTimer=setInterval(()=>{recSec++; let m=Math.floor(recSec/60); let s=recSec%60; document.getElementById('timerRec').innerText=(m<10?'0'+m:m)+':'+(s<10?'0'+s:s);},1000);
+  }catch(e){ document.getElementById('recTxt').innerText="❌ Il faut autoriser le micro! Appuie sur Autoriser!"; alert("Appuie sur AUTORISER pour le micro!"); }
+}
+function arreterEnregistrement(){
+  if(mediaRecorder && mediaRecorder.state!='inactive'){ mediaRecorder.stop(); clearInterval(recTimer); document.getElementById('btnRec').innerText="🔴 COMMENCER À ENREGISTRER"; document.getElementById('recTxt').innerText="⏹️ Arrêté! Tu peux écouter!"; }
+}
 </script>
 </body>
 </html>
